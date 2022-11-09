@@ -19,7 +19,7 @@ type pet struct {
 	Name     string
 	Species  string
 	Color    string
-	Age      int
+	Age      int64
 	Weight   float64
 	Location location
 }

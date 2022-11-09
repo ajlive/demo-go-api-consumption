@@ -1,48 +1,68 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 )
 
 const banjoID = "05cc936a-6068-11ed-8427-32bc7acc9df8"
 
-const banjoPayload = `
-{
-	"id": "%v",
-	"name": "Banjo",
-	"species": "cat",
-	"color": "orange",
-	"age": 5,
-	"weight": 15.5,
-	"location": {
-		"city": "Denver",
-		"state": "CO"
-	}
+type errorPayload struct {
+	Error string `json:"error"`
 }
-`
 
-const errorPayload = `
-{
-	"error": "%v"
+type location struct {
+	City  string `json:"city"`
+	State string `json:"state"`
 }
-`
+type pet struct {
+	ID       string   `json:"id"`
+	Name     string   `json:"name"`
+	Species  string   `json:"species"`
+	Color    string   `json:"color"`
+	Age      int64    `json:"age"`
+	Weight   float64  `json:"weight"`
+	Location location `json:"location"`
+}
+
+var petsRepository = map[string]pet{
+	banjoID: {
+		ID:      banjoID,
+		Name:    "Banjo",
+		Species: "cat",
+		Color:   "orange",
+		Age:     5,
+		Weight:  15.5,
+		Location: location{
+			City:  "Denver",
+			State: "CO",
+		},
+	},
+}
 
 func run() error {
-	writeSuccess := func(w http.ResponseWriter, payload string) {
+	writeSuccess := func(w http.ResponseWriter, resp any) {
 		w.Header().Add("Content-Type", "application/json")
-		payload = strings.TrimSpace(payload)
-		w.Write([]byte(payload))
+		payload, err := json.MarshalIndent(resp, "", "\t")
+		if err != nil {
+			panic(err)
+		}
+		w.Write(payload)
 	}
 
 	writeError := func(w http.ResponseWriter, status int, err error) {
 		w.WriteHeader(status)
 		w.Header().Add("Content-Type", "application/json")
-		payload := fmt.Sprintf(errorPayload, err)
-		payload = strings.TrimSpace(payload)
-		w.Write([]byte(payload))
+		resp := errorPayload{
+			Error: err.Error(),
+		}
+		payload, err := json.MarshalIndent(resp, "", "\t")
+		if err != nil {
+			panic(err)
+		}
+		w.Write(payload)
 	}
 
 	http.HandleFunc("/api/pets", func(w http.ResponseWriter, r *http.Request) {
@@ -59,8 +79,8 @@ func run() error {
 			return
 		}
 
-		payload := fmt.Sprintf(banjoPayload, id)
-		writeSuccess(w, payload)
+		banjo := petsRepository[id]
+		writeSuccess(w, banjo)
 	})
 
 	fmt.Printf("starting pet server on :8989\nexample URL:\nhttp://localhost:8989/api/pets?id=%v\n", banjoID)
