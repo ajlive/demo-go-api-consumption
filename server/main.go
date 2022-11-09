@@ -47,7 +47,8 @@ func run() error {
 		w.Header().Add("Content-Type", "application/json")
 		payload, err := json.MarshalIndent(resp, "", "\t")
 		if err != nil {
-			panic(err)
+			panic(err) // panic, like throwing an exception except designed to crash the app; used for programmer errors
+			// can be used with built-in recover() function, but expected errors are better handled with error returns
 		}
 		w.Write(payload)
 	}
@@ -66,8 +67,8 @@ func run() error {
 	}
 
 	http.HandleFunc("/api/pets", func(w http.ResponseWriter, r *http.Request) {
-		query := r.URL.Query()
-		ids, ok := query["id"]
+		query := r.URL.Query() // map of query parameters map[string][]string
+		ids, ok := query["id"] // second return, "ok" bool, says whether the key was found in the map
 		if !ok || len(ids) != 1 {
 			writeError(w, 422, fmt.Errorf("url must have one id query parameter"))
 			return

@@ -37,15 +37,15 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() // defer keyword runs a function at the end of the current scope (run() in this case)
 
-	b, err := io.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body) // body read as bytes b
 	if err != nil {
 		return err
 	}
 
 	var banjo pet
-	if err := json.Unmarshal(b, &banjo); err != nil {
+	if err := json.Unmarshal(b, &banjo); err != nil { // unmarshall from bytes into data structure at given memory address ("&" operator gives pointer to address)
 		return err
 	}
 
