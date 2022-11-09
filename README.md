@@ -2,6 +2,11 @@
 
 Extremely simple demo of Go API consumption
 
+- [demo-go-api-consumption](#demo-go-api-consumption)
+  - [Running the example](#running-the-example)
+  - [Building](#building)
+  - [Formatting](#formatting)
+
 ## Running the example
 
 In one window, type:
