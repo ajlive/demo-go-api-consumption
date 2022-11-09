@@ -63,10 +63,7 @@ func run() error {
 		writeSuccess(w, payload)
 	})
 
-	fmt.Printf(`
-Running Pet Server. Please direct request to:
-http://localhost:8989/api/pets?id=%v
-	`, banjoID)
+	fmt.Printf("starting pet server on :8989\nexample URL:\nhttp://localhost:8989/api/pets?id=%v\n", banjoID)
 	return http.ListenAndServe(":8989", nil)
 }
 

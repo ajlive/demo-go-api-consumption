@@ -49,7 +49,7 @@ func run() error {
 		return err
 	}
 
-	fmt.Printf("Requested URL %v; response:\n%v\nUnmarshaled to Go struct:\n%#v\n", banjoURL, string(b), banjo)
+	fmt.Printf("requested URL:\n%v\n\nresponse:\n%v\n\nunmarshalled to Go struct:\n%#v\n", banjoURL, string(b), banjo)
 	return nil
 }
 
