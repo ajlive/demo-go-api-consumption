@@ -26,19 +26,19 @@ go run client/main.go
 Note that running with `go run` yields startup times comparable to Python. To build, run:
 
 ```
-go build -o runserver server/main.go && go build -o runclient client/main.go
+go build -o build/runserver server/main.go && go build -o build/runclient client/main.go
 ```
 
 Then run the server with:
 
 ```
-./runserver
+./build/runserver
 ```
 
 and the client with:
 
 ```
-./runclient
+./build/runclient
 ```
 
 ## Formatting
