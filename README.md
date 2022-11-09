@@ -1,6 +1,6 @@
 # example-golang-api-consumer
 
-demo of a go API consumer
+Extremely simple demo of Go API consumption
 
 ## Running the example
 

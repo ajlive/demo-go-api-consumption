@@ -1,3 +1,3 @@
-module github.com/mspinc/example-golang-api-consumer
+module github.com/ajlive/example-golang-api-consumer
 
 go 1.19
