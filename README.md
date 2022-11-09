@@ -1,4 +1,4 @@
-# example-golang-api-consumer
+# demo-go-api-consumption
 
 Extremely simple demo of Go API consumption
 
