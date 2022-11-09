@@ -1,14 +1,31 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 )
 
+const banjoURL = "http://localhost:8989/api/pets?id=05cc936a-6068-11ed-8427-32bc7acc9df8"
+
+type location struct {
+	City  string
+	State string
+}
+type pet struct {
+	ID       string
+	Name     string
+	Species  string
+	Color    string
+	Age      int
+	Weight   float64
+	Location location
+}
+
 func run() error {
-	req, err := http.NewRequest("GET", "http://localhost:8989/api/pets?id=05cc936a-6068-11ed-8427-32bc7acc9df8", nil)
+	req, err := http.NewRequest("GET", banjoURL, nil)
 	if err != nil {
 		return err
 	}
@@ -22,12 +39,17 @@ func run() error {
 	}
 	defer resp.Body.Close()
 
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println(string(b))
+	var banjo pet
+	if err := json.Unmarshal(b, &banjo); err != nil {
+		return err
+	}
+
+	fmt.Printf("Requested URL %v; response:\n%v\nUnmarshaled to Go struct:\n%#v\n", banjoURL, string(b), banjo)
 	return nil
 }
 
