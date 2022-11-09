@@ -1,3 +1,3 @@
-module github.com/ajlive/example-golang-api-consumer
+module github.com/ajlive/demo-go-api-consumption
 
 go 1.19
