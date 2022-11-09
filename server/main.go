@@ -9,7 +9,7 @@ import (
 
 const banjoID = "05cc936a-6068-11ed-8427-32bc7acc9df8"
 
-type errorPayload struct {
+type errorResponse struct {
 	Error string `json:"error"`
 }
 
@@ -55,7 +55,7 @@ func run() error {
 	writeError := func(w http.ResponseWriter, status int, err error) {
 		w.WriteHeader(status)
 		w.Header().Add("Content-Type", "application/json")
-		resp := errorPayload{
+		resp := errorResponse{
 			Error: err.Error(),
 		}
 		payload, err := json.MarshalIndent(resp, "", "\t")
